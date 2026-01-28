@@ -1,4 +1,9 @@
 export const typography = {
+    logo: {
+        fontSize: 32,
+        fontWeight: "800" as const,
+        letterSpacing: 1,
+    },
     heading: {
         fontFamily: "InterBold",
         fontSize: 24,

@@ -2,6 +2,7 @@ export const colors = {
     brand: {
         primary: "#FF6600",   // Ride (energy, CTA)
         secondary: "#5B0302", // Rest (hospitality, premium)
+        light: "#FED4D4"// Light variant for backgrounds and accents
     },
 
     light: {
@@ -18,6 +19,12 @@ export const colors = {
         muted: "#A1A1AA",
         border: "#27272A",
         card: "#161616",
+    },
+    gray: {
+        100: "#F5F5F5",
+        300: "#D4D4D4",
+        500: "#9E9E9E",
+        700: "#616161",
     },
 
 };

@@ -6,7 +6,7 @@ export function useTheme() {
     const isDark = scheme === "dark";
 
     return {
-        colors: isDark ? colors.dark : colors.light,
+        colors: { ...(isDark ? colors.dark : colors.light), ...colors.brand, ...colors.gray },
         brand: colors.brand,
         isDark,
     };

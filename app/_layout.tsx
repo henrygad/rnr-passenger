@@ -1,29 +1,19 @@
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useFonts } from "expo-font";
-import { useEffect } from "react";
-
-SplashScreen.preventAutoHideAsync();
+import { AuthProvider } from "@/context/auth-context";
+// import { LocationProvider } from "@/context/location-context";
+// import { LocationPermissionProvider } from "@/context/permission-context";
+import { Slot } from "expo-router";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    InterLight: require("../assets/fonts/Inter-Light.ttf"),
-    InterRegular: require("../assets/fonts/Inter-Regular.ttf"),
-    InterMedium: require("../assets/fonts/Inter-Medium.ttf"),
-    InterSemiBold: require("../assets/fonts/Inter-SemiBold.ttf"),
-    InterBold: require("../assets/fonts/Inter-Bold.ttf"),
-    InterItalic: require("../assets/fonts/Inter-Italic.ttf"),
-  });
-
-  useEffect(() => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <AuthProvider>
+      {/* <LocationPermissionProvider> */}
+      {/* <LocationProvider> */}
+      <SafeAreaProvider>
+        <Slot />
+      </SafeAreaProvider>
+      {/* </LocationProvider> */}
+      {/* </LocationPermissionProvider> */}
+    </AuthProvider>
+  );
 }

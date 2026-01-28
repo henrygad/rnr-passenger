@@ -9,14 +9,21 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyCvXkE6_LeWOYLYEzmRdscbFx7RaGxLyOw"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        // "backgroundImage": "./assets/images/android-icon-background.png",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png",
         "backgroundColor": "#FF6600"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDqdiTuMW1HqAaRG6f-O_sKj-Ne9F1Xvpk"
+        }
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
@@ -38,7 +45,8 @@
             "backgroundColor": "#0B0B0B"
           }
         }
-      ]
+      ],
+      "@react-native-firebase/auth"
     ],
     "experiments": {
       "typedRoutes": true,
