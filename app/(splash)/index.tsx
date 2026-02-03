@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useAuthContext } from "@/context/auth-context";
 import { colors } from "@/constants/colors";
-import Screen from "@/componants/Screen";
+import Screen from "@/componants/screen";
 const RNR_FULL_LOGO = require("@/assets/images/rnr-full-logo.png");
 
 export default function SplashScreen() {
@@ -29,7 +29,7 @@ export default function SplashScreen() {
         // Check auth state after a delay
         const timeout = setTimeout(async () => {
             await AsyncStorage.removeItem("hasSeenOnboarding");
-            const hasSeenOnboarding = (await AsyncStorage.getItem("hasSeenOnboarding")) === "true";
+            const hasSeenOnboarding = (await AsyncStorage.getItem("hasSeenOnboarding")) === "true";            
 
             if (auth.loading) {
                 return null;
@@ -38,7 +38,7 @@ export default function SplashScreen() {
             } else if (!auth.user) {
                 router.replace("/(auth)/login");
             } else if (auth.user) {
-                router.replace("/(tabs)")
+                router.replace("/(account)/(tabs)")
             }
 
         }, 1800);
@@ -54,7 +54,7 @@ export default function SplashScreen() {
     return (
         <Screen
             isFull
-            hideStatusBar
+            hideStatusBar={true}
             style={styles.container}
         >
             <Animated.View style={[styles.logoContainer, animatedStyle]}>

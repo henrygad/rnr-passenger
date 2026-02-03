@@ -8,13 +8,11 @@ type Auth = {
     phoneNumber: string | null;
     confirmation: ConfirmationResult | null;
     loading: boolean;
-    loginSuccessfully?: boolean;
 };
 
 type AuthContextType = {
     auth: Auth;
-    setConfirmation: (c: ConfirmationResult | null, phone?: string) => void;
-    setLoginSuccessfully: (value: boolean) => void;
+    setConfirmation: (c: ConfirmationResult | null, phone?: string) => void;    
     logout: () => Promise<void>;
 };
 
@@ -25,8 +23,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user: null,
         phoneNumber: null,
         confirmation: null,
-        loading: true,
-        loginSuccessfully: undefined,
+        loading: true,        
     });
 
     // POST-AUTH BOOTSTRAP (THIS IS THE MAGIC)
@@ -45,21 +42,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     function setConfirmation(
         confirmation: ConfirmationResult | null,
         phone?: string
-    ) {
-        console.log(phone, "inside auth context");
+    ) {        
         setAuth((prev) => ({
             ...prev,
             confirmation,
             phoneNumber: phone ?? prev.phoneNumber,
         }));
-    }
-
-    function setLoginSuccessfully(value: boolean) {
-        setAuth((prev) => ({
-            ...prev,
-            loginSuccessfully: value,
-        }));
-    }
+    } 
 
     async function logout() {
         await firebaseAuth.signOut();
@@ -73,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 
     return (
-        <AuthContext.Provider value={{ auth, setConfirmation, logout, setLoginSuccessfully }}>
+        <AuthContext.Provider value={{ auth, setConfirmation, logout }}>
             {children}
         </AuthContext.Provider>
     );

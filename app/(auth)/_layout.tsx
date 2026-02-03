@@ -5,7 +5,7 @@ export default function AuthLayout() {
     const { auth } = useAuthContext();
 
     if (auth.user) {
-        return <Redirect href="/(tabs)" />;
+        return <Redirect href="/(account)" />;
     }
 
     return <Stack screenOptions={{ headerShown: false }} />;

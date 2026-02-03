@@ -8,31 +8,13 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '@/constants/theme';
 import { spacing } from '@/constants/spacing';
 import { typography } from '@/constants/typography';
-import Screen from '@/componants/Screen';
+import { Button } from '@/componants/common/Button';
+import Screen from '@/componants/screen';
+import { ONBOARDING_DATA } from '@/data/on-boarding';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 const AUTO_SLIDE_INTERVAL = 3000; // 3 Seconds as requested
-
-const ONBOARDING_DATA = [
-    {
-        id: '1',
-        title: 'Travel & Hospitality',
-        description: 'Move freely. Rest easily. Wherever life takes you, we make sure you get there comfortably',
-        gif: require('@/assets/gifs/onboarding1.gif'),
-    },
-    {
-        id: '2',
-        title: 'Lifestyle & Convenience',
-        description: 'Rest easy with our premium hospitality services and secondary care.',
-        gif: require('@/assets/gifs/onboarding2.gif'),
-    },
-    {
-        id: '3',
-        title: 'Get Started',
-        description: 'Ready to begin your journey? Join us today and explore more.',
-        gif: require('@/assets/gifs/onboarding3.gif'),
-    },
-];
 
 export default function OnboardingSwiper() {
     const { colors, brand } = useTheme();
@@ -89,6 +71,9 @@ export default function OnboardingSwiper() {
         if (currentIndex < ONBOARDING_DATA.length - 1) {
             flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
         } else {
+            // Mark onboarding as seen
+            AsyncStorage.setItem("hasSeenOnboarding", "true");
+            // Then navigate to login
             router.replace('/(auth)/login');
         }
     };
@@ -110,7 +95,10 @@ export default function OnboardingSwiper() {
     if (!isReady) return null;
 
     return (
-        <Screen style={[styles.container]} isFull={true}>
+        <Screen
+            isFull={true}
+            style={styles.container}
+        >
             {/* Animated FlatList for Swiping */}
             <Animated.FlatList
                 ref={flatListRef}
@@ -140,12 +128,15 @@ export default function OnboardingSwiper() {
 
                     return (
                         <Animated.View style={[styles.slide, { opacity, transform: [{ scale }] }]}>
-                            <Image source={item.gif} style={styles.gif} contentFit="contain" />
+                            <Image source={item.gif} style={styles.gif} contentFit="cover" />
                             <View style={styles.textContainer}>
-                                <Text style={[typography.heading, { color: colors.secondary, textAlign: 'center', marginBottom: spacing.md }]}>
+                                <Text style={[
+                                    typography.heading,
+                                    { fontWeight: '700', color: colors.secondary, textAlign: 'center', marginBottom: spacing.md }
+                                ]}>
                                     {item.title}
                                 </Text>
-                                <Text style={[typography.body, { color: colors.muted, textAlign: 'center', paddingHorizontal: spacing.lg }]}>
+                                <Text style={[typography.body, { color: colors[700], textAlign: 'center', paddingHorizontal: spacing.lg }]}>
                                     {item.description}
                                 </Text>
                             </View>
@@ -176,7 +167,7 @@ export default function OnboardingSwiper() {
                                 key={i}
                                 style={[
                                     styles.indicator,
-                                    { width: dotWidth, opacity: dotOpacity, backgroundColor: brand.primary }
+                                    { width: dotWidth, opacity: dotOpacity, backgroundColor: brand.secondary }
                                 ]}
                             />
                         );
@@ -184,19 +175,22 @@ export default function OnboardingSwiper() {
                 </View>
 
                 {/* CTA Button */}
-                <TouchableOpacity
-                    style={[styles.nextBtn, { backgroundColor: brand.primary, paddingVertical: spacing.md, width: width * 0.7 }]}
+                <Button
+                    title={currentIndex === ONBOARDING_DATA.length - 1 ? 'Get Started' : 'Next'}
+                    variant='secondary'
                     onPress={handleNext}
-                >
-                    <Text style={[typography.button, { color: '#FFFFFF' }]}>
-                        {currentIndex === ONBOARDING_DATA.length - 1 ? 'Get Started' : 'Next'}
-                    </Text>
-                </TouchableOpacity>
+                    style={{ width: width * 0.8 }}
+                />
 
-                {/* Skip Text */}
-                <TouchableOpacity style={{ marginTop: spacing.lg }} onPress={handleSkip}>
-                    <Text style={[typography.caption, { color: colors.muted }]}>Skip</Text>
-                </TouchableOpacity>
+                {/* Show skip button one and section section only */}
+                {currentIndex < ONBOARDING_DATA.length - 1 ?
+                    <TouchableOpacity style={{ marginTop: spacing.lg }} onPress={handleSkip}>
+                        <Text style={[typography.caption, { color: colors[700] }]}>Skip</Text>
+                    </TouchableOpacity> :
+                    <View style={{ marginTop: spacing.lg }}>
+                        <Text style={{ opacity: 0 }}>Skip</Text>
+                    </View>
+                }
             </View>
         </Screen>
     );

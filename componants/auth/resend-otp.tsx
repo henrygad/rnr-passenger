@@ -41,14 +41,14 @@ export default function ResendOtp() {
             />
 
             {!canResend ? (
-                <Text style={{ color: colors.light.muted }}>
+                <Text style={{ color: colors.gray[700] }}>
                     Resend code in {secondsLeft}s
                 </Text>
             ) : (
                 <TouchableOpacity onPress={resendCode}>
                     <Text
                         style={{
-                            color: colors.brand.primary,
+                                color: colors.gray[700],
                             fontWeight: "600",
                             marginTop: spacing.sm,
                         }}

@@ -11,9 +11,10 @@ interface ButtonProps {
     variant?: 'primary' | 'secondary' | 'outline';
     loading?: boolean;
     style?: StyleProp<ViewStyle>;
+    disabled?: boolean;
 }
 
-export const Button = ({ title, onPress, variant = 'primary', loading, style }: ButtonProps) => {
+export const Button = ({ title, onPress, variant = 'primary', loading, style, disabled = false }: ButtonProps) => {
     const { colors } = useTheme();
     const haptics = useHaptics();
 
@@ -51,7 +52,7 @@ export const Button = ({ title, onPress, variant = 'primary', loading, style }: 
     return (
         <TouchableOpacity
             onPress={handlePress}
-            disabled={loading}
+            disabled={disabled || loading}
             activeOpacity={0.8}
             style={[
                 styles.btn,
@@ -59,10 +60,11 @@ export const Button = ({ title, onPress, variant = 'primary', loading, style }: 
                     backgroundColor: activeStyle.bg,
                     borderColor: activeStyle.border,
                     borderWidth: activeStyle.border ? 1 : 0,
+                    opacity: disabled || loading ? 0.5 : 1,
                 },
                 activeStyle.shadow, // Applying your new shadow.button
                 style
-            ]}
+            ]}           
         >
             {loading ? (
                 <ActivityIndicator color={activeStyle.text} />
@@ -76,7 +78,7 @@ export const Button = ({ title, onPress, variant = 'primary', loading, style }: 
 const styles = StyleSheet.create({
     btn: {
         height: 56,
-        borderRadius: 16,
+        borderRadius: spacing.md,
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: spacing.md,

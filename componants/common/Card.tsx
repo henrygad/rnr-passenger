@@ -1,11 +1,21 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useTheme } from '@/constants/theme';
+import { shadow } from '@/constants/shadow';
 import { spacing } from '@/constants/spacing';
 
-export const Card = ({ children, style }: { children: React.ReactNode, style?: any }) => {
+export const Card = ({ children, style }: { children: React.ReactNode, style?: StyleProp<ViewStyle> }) => {
     const { colors } = useTheme();
+
     return (
-        <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }, style]}>
+        <View style={[
+            styles.card,
+            {
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+            },
+            shadow.card, // Applying your new shadow.card
+            style
+        ]}>
             {children}
         </View>
     );
@@ -15,10 +25,5 @@ const styles = StyleSheet.create({
     card: {
         padding: spacing.md,
         borderRadius: 16,
-        borderWidth: 1,
-        shadowColor: '#000',
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
-        elevation: 2
-    }
+    },
 });

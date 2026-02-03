@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
 import { useTheme } from '@/constants/theme';
-import { spacing } from '@/constants/spacing';
 import { typography } from '@/constants/typography';
 
 export default function CustomOtpInput({ code, setCode, maximumLength = 6 }: any) {
@@ -24,12 +23,12 @@ export default function CustomOtpInput({ code, setCode, maximumLength = 6 }: any
                 style={[
                     styles.box,
                     {
-                        backgroundColor: colors.card,
-                        borderColor: isFocused ? brand.primary : colors.border
+                        backgroundColor: "transparent",
+                        borderColor: isFocused ? brand.primary : colors.secondary
                     }
                 ]}
             >
-                <Text style={[typography.heading, { color: colors.text }]}>{digit}</Text>
+                <Text style={[typography.heading, { color: colors[700] }]}>{digit}</Text>
             </View>
         );
     };
@@ -52,15 +51,16 @@ export default function CustomOtpInput({ code, setCode, maximumLength = 6 }: any
 }
 
 const styles = StyleSheet.create({
-    container: { justifyContent: 'center', alignItems: 'center', marginVertical: spacing.xl },
-    inputContainer: { width: '100%', flexDirection: 'row', justifyContent: 'space-between' },
+    container: { justifyContent: 'center', alignItems: 'center', },
+    inputContainer: { width: '100%', flexDirection: 'row', justifyContent: 'center' },
     box: {
-        width: 50,
-        height: 60,
+        width: 40,
+        height: 45,
         borderWidth: 2,
         borderRadius: 12,
         justifyContent: 'center',
         alignItems: 'center',
+        marginHorizontal: 4,
     },
     hiddenInput: { position: 'absolute', opacity: 0, width: 1, height: 1 },
 });

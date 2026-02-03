@@ -2,16 +2,13 @@ import { useRef, useState } from "react";
 import {
     View,
     Text,
-    TextInput,
-    Pressable,
-    ActivityIndicator,
+    TextInput,    
     StyleSheet,
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { signInWithPhoneNumber } from "firebase/auth";
 
 import { auth } from "@/lib/firebase";
-import { colors } from "@/constants/colors";
 import { spacing } from "@/constants/spacing";
 import { typography } from "@/constants/typography";
 import { useTheme } from "@/constants/theme";
@@ -19,26 +16,39 @@ import { useAuthContext } from "@/context/auth-context";
 import { useRouter } from "expo-router";
 import { getAuthErrorMessage } from "@/lib/auth-errors";
 import RecaptchaVerifier from "@/componants/auth/recaptcha";
+import Screen from "@/componants/screen";
+import { Image } from "expo-image";
+import { Button } from "@/componants/common/Button";
+import { Controller, useForm } from "react-hook-form";
+import { formatPhoneNumber } from "@/helper/format-phone-number";
+
 
 export default function LoginScreen() {
-    const { colors: themeColors } = useTheme();
-
-
+    const { colors } = useTheme();
     const router = useRouter();
     const { setConfirmation } = useAuthContext();
     const recaptchaRef = useRef<FirebaseRecaptchaVerifierModal>(null);
 
-    const [phone, setPhone] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
 
+    const { control, watch, handleSubmit, setError, } = useForm({
+        defaultValues: { phone: '' }
+    });
 
-    const handleContinue = async () => {
-        if (!phone || loading) return;
+    const handleContinue = async (data: { phone: string }) => {
+        if (!data.phone || loading) return;
+
+        const phone = formatPhoneNumber(data.phone);
+
+        // Now check if after formatting, it meets your requirements
+        if (phone.length < 14) { // +234 + 10 digits = 14
+            setError("phone", { message: "Please enter a complete phone number" });
+            return;
+        }        
 
         try {
             setLoading(true);
-            setError("");
+            setError("phone", { message: "" });
 
             const result = await signInWithPhoneNumber(
                 auth,
@@ -47,76 +57,125 @@ export default function LoginScreen() {
             );
 
             setConfirmation(result, phone);
-            router.push("/(auth)/otp");
+            router.push("/otp");
         } catch (e: any) {
             console.log(e);
-            setError(getAuthErrorMessage(e.code));
+            setError("phone", { message: getAuthErrorMessage(e.code) });
         } finally {
             setLoading(false);
         }
-    };
-
+    };   
 
     return (
-        <View style={[styles.container, { backgroundColor: themeColors.background, }]}>
-            {/* CAPTCHA (invisible until needed) */}
-            <RecaptchaVerifier
-                verifierRef={recaptchaRef}
-            />
-            <View style={{ marginTop: spacing.xxl }}>
-                <Text style={[typography.heading, { color: themeColors.text, textAlign: 'center' }]}>
-                    Welcome to RideAndRest
-                </Text>
-                <Text style={[typography.body, { color: themeColors.muted, marginTop: spacing.xs, textAlign: 'center' }]}>
-                    Enter your phone number to continue.
-                </Text>
-            </View>
-
-            <View style={{ marginTop: spacing.xxl }}>
-                <Text style={[typography.caption, { color: themeColors.text, marginBottom: spacing.sm, fontFamily: 'InterMedium' }]}>
-                    Phone Number
-                </Text>
-                <TextInput
-                    placeholder="+234 800 000 0000"
-                    keyboardType="phone-pad"
-                    value={phone}
-                    editable={!loading}
-                    onChangeText={setPhone}
-                    placeholderTextColor={colors.gray[500]}
-                    style={{
-                        height: 56,
-                        borderWidth: 1.5,
-                        borderColor: themeColors.border,
-                        borderRadius: spacing.sm,
-                        paddingHorizontal: spacing.md,
-                        fontSize: typography.body.fontSize,
-                        color: themeColors.text,
-                        backgroundColor: themeColors.card,
-                        //marginBottom: spacing.lg,
-                    }}
+        <Screen
+            style={{ backgroundColor: "#FFFFFF", padding: spacing.lg }}
+            dissmissKeyboardOnTouchOutside={true}
+            StatusBarStyle="default"
+        >
+            <View style={[styles.container]}>
+                {/* CAPTCHA (invisible until needed) */}
+                <RecaptchaVerifier
+                    verifierRef={recaptchaRef}
                 />
-                {error ? <Text style={[typography.caption, { color: colors.brand.primary, marginTop: spacing.xs, textAlign: 'center' }]}>{error}</Text> : null}
-            </View>
 
-            <Pressable
-                onPress={handleContinue}
-                style={({ pressed }) => ({
-                    backgroundColor: colors.brand.primary,
-                    height: 56,
-                    borderRadius: spacing.sm,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: spacing.xl,
-                    opacity: (loading || !phone) ? 0.6 : (pressed ? 0.9 : 1)
-                })}
-            >
-                {loading ? <ActivityIndicator color="#fff" /> : <Text style={[typography.button, { color: '#fff' }]}>Continue</Text>}
-            </Pressable>
-        </View >
+                <View style={{ marginTop: spacing.xxl }}>
+                    {/* Logo */}
+                    <Image
+                        source={require("@/assets/images/logo-icon.png")}
+                        style={{ width: 64, height: 85, alignSelf: 'center', marginBottom: spacing.lg }}
+                        contentFit="contain"
+                    />
+
+                    {/* Title */}
+                    <Text style={[
+                        typography.heading,
+                        { color: colors.secondary, fontWeight: "700", marginTop: spacing.md, textAlign: 'center' }
+                    ]}>
+                        Welcome
+                    </Text>
+
+                    {/* Subtitle */}
+                    <Text style={[
+                        typography.body,
+                        { color: colors[700], marginTop: spacing.sm, textAlign: 'center' }
+                    ]}>
+                        Enter your phone number to continue.
+                    </Text>
+                </View>
+
+                <View style={{ marginTop: spacing.xxl }}>
+                    {/* Phone number input */}
+                    <Controller
+                        control={control}
+                        name="phone"
+                        rules={{
+                            required: 'Phone number is required',
+                            minLength: {
+                                value: 11,
+                                message: 'Phone number must be at least 11 digits'
+                            },
+                            // pattern: {
+                            //     // This regex ensures it's a valid international format
+                            //     value: /^\+?[1-9]\d{1,14}$/,
+                            //     message: 'Please enter a valid phone number'
+                            // }
+                        }}
+                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                            <View style={{ marginBottom: spacing.md }}>
+                                <Text style={[typography.caption, { color: colors[700], marginBottom: spacing.xs }]}>
+                                    Phone Number
+                                </Text>
+                                <TextInput
+                                    style={[
+                                        styles.input,
+                                        {
+                                            color: colors[700],
+                                            borderColor: error ? colors.primary : colors.secondary
+                                        }
+                                    ]}
+                                    editable={!loading}
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                    placeholder="+234 800 000 0000"
+                                    placeholderTextColor={colors[700]}
+                                    keyboardType="phone-pad"
+                                />
+                                {error &&
+                                    <Text style={[typography.caption, { color: colors.primary, marginTop: 4, textAlign: 'center' }]}>
+                                        {error.message}
+                                    </Text>
+                                }
+                            </View>
+                        )}
+                    />
+                </View>
+
+                <View style={{ marginTop: spacing.lg }}>
+                    {/* Button */}
+                    <Button
+                        title="Continue"
+                        onPress={handleSubmit(handleContinue)}
+                        loading={(loading)}
+                        disabled={!watch("phone")}
+                        variant="secondary"
+                    />
+                </View>
+            </View >
+
+        </Screen>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: spacing.lg, justifyContent: "center" },
-
+    container: {
+        flex: 1,
+    },
+    input: {
+        borderWidth: 1.5,
+        borderRadius: spacing.md,
+        height: 56,
+        paddingHorizontal: spacing.md,
+        ...typography.body
+    }
 });

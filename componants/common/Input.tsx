@@ -28,7 +28,11 @@ export const Input = ({ control, name, label, placeholder, rules, keyboardType }
                     <TextInput
                         style={[
                             styles.input,
-                            { backgroundColor: colors.card, color: colors.text, borderColor: error ? colors.primary : colors.border }
+                            {
+                                backgroundColor: colors.card,
+                                color: colors.text,
+                                borderColor: error ? colors.primary : colors.border
+                            }
                         ]}
                         onBlur={onBlur}
                         onChangeText={onChange}
