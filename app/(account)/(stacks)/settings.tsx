@@ -7,7 +7,6 @@ export default function SettingsScreen() {
     const [loading, setLoading] = useState(false);
 
 
-
     const handleLogout = () => {
         try {
             setLoading(true);

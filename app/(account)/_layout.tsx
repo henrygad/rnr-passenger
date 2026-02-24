@@ -13,8 +13,6 @@ export default function TabsLayout() {
         return <Redirect href="/(auth)/login" />;
     }
 
-
-    // Continue to the app
     return (
         <Stack>
             {/* The main app content */}
@@ -22,7 +20,6 @@ export default function TabsLayout() {
 
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-            {/* The Modal Group */}
             <Stack.Screen
                 name="(modals)/booking"
                 options={{
@@ -31,6 +28,9 @@ export default function TabsLayout() {
                     animation: 'slide_from_bottom' // Premium entry
                 }}
             />
+
+            <Stack.Screen name="(stacks)" options={{ headerShown: false }} />
+
         </Stack>
     )
 }

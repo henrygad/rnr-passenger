@@ -3,7 +3,7 @@ import { typography } from '@/constants/typography';
 import { spacing } from '@/constants/spacing';
 import { useTheme } from '@/constants/theme';
 import Screen from '@/componants/screen';
-import { Button } from '@/componants/common/Button';
+import { Button } from '@/componants/common/button';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 
@@ -25,7 +25,7 @@ export default function LoginSuccessfully() {
                     contentFit="contain"
                 />
             </View>
-            <View style={{}}>
+            <View>
                 {/* Title */}
                 <Text style={[
                     typography.subheading,

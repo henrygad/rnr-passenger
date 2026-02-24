@@ -18,7 +18,7 @@ import { getAuthErrorMessage } from "@/lib/auth-errors";
 import RecaptchaVerifier from "@/componants/auth/recaptcha";
 import Screen from "@/componants/screen";
 import { Image } from "expo-image";
-import { Button } from "@/componants/common/Button";
+import { Button } from "@/componants/common/button";
 import { Controller, useForm } from "react-hook-form";
 import { formatPhoneNumber } from "@/helper/format-phone-number";
 
@@ -68,7 +68,7 @@ export default function LoginScreen() {
 
     return (
         <Screen
-            style={{ backgroundColor: "#FFFFFF", padding: spacing.lg }}
+            style={{ backgroundColor: "#FFFFFF" }}
             dissmissKeyboardOnTouchOutside={true}
             StatusBarStyle="default"
         >

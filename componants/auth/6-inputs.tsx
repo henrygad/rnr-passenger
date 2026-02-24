@@ -4,7 +4,7 @@ import { useTheme } from '@/constants/theme';
 import { typography } from '@/constants/typography';
 
 export default function CustomOtpInput({ code, setCode, maximumLength = 6 }: any) {
-    const { colors, brand } = useTheme();
+    const { colors } = useTheme();
     const inputRef = React.useRef<TextInput>(null);
 
     const boxArray = new Array(maximumLength).fill(0);
@@ -24,7 +24,7 @@ export default function CustomOtpInput({ code, setCode, maximumLength = 6 }: any
                     styles.box,
                     {
                         backgroundColor: "transparent",
-                        borderColor: isFocused ? brand.primary : colors.secondary
+                        borderColor: isFocused ? colors.primary : colors.secondary
                     }
                 ]}
             >

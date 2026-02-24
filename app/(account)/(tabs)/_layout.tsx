@@ -4,13 +4,12 @@ import { Platform, StyleSheet, Pressable, View } from 'react-native';
 import { BlurView } from 'expo-blur';
 
 import { useTheme } from '@/constants/theme';
-import { shadow } from '@/constants/shadow';
 import { useHaptics } from '@/hooks/use-haptics';
 import TabItem from '@/componants/tabs/tab-item';
 
 
 export default function TabsLayout() {
-    const { colors, brand, isDark } = useTheme();
+    const { colors, isDark, shadow } = useTheme();
     const haptics = useHaptics();
     const router = useRouter();
 
@@ -22,19 +21,19 @@ export default function TabsLayout() {
                 tabBarStyle: {
                     position: 'absolute',
                     borderTopColor: colors.border,
-                    backgroundColor: Platform.OS === 'ios' ? 'transparent' : colors.background,
-                    height: Platform.OS === 'ios' ? 95 : 100,
-                    // paddingTop: 4,
-                    ...shadow.regular,
+                    backgroundColor: colors.background, //Platform.OS === 'ios' ? 'transparent' : colors.background,
+                    height: Platform.OS === 'ios' ? 100 : 105,
+                    paddingTop: 5,
+                    ...shadow
                 },
-                tabBarBackground: () =>
-                    Platform.OS === 'ios' ? (
-                        <BlurView
-                            intensity={isDark ? 80 : 100}
-                            tint={isDark ? 'dark' : 'light'}
-                            style={StyleSheet.absoluteFill}
-                        />
-                    ) : null,
+                // tabBarBackground: () =>
+                //     Platform.OS === 'ios' ? (
+                //         <BlurView
+                //             intensity={isDark ? 80 : 100}
+                //             tint={isDark ? 'dark' : 'light'}
+                //             style={StyleSheet.absoluteFill}
+                //         />
+                //     ) : null,
             }}
         >
             <Tabs.Screen
@@ -63,8 +62,8 @@ export default function TabsLayout() {
                                 }}
                                 style={({ pressed }) => [
                                     styles.middleBtn,
-                                    { backgroundColor: brand.primary, transform: [{ scale: pressed ? 0.95 : 1 }] },
-                                    shadow.button
+                                    { backgroundColor: colors.primary, transform: [{ scale: pressed ? 0.95 : 1 }] },
+                                    shadow
                                 ]}
                             >
                                 <Ionicons name="calendar" size={28} color="#FFF" />

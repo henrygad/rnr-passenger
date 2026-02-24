@@ -8,7 +8,7 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '@/constants/theme';
 import { spacing } from '@/constants/spacing';
 import { typography } from '@/constants/typography';
-import { Button } from '@/componants/common/Button';
+import { Button } from '@/componants/common/button';
 import Screen from '@/componants/screen';
 import { ONBOARDING_DATA } from '@/data/on-boarding';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,7 +17,7 @@ const { width } = Dimensions.get('window');
 const AUTO_SLIDE_INTERVAL = 3000; // 3 Seconds as requested
 
 export default function OnboardingSwiper() {
-    const { colors, brand } = useTheme();
+    const { colors } = useTheme();
     const router = useRouter();
 
     const [isReady, setIsReady] = useState(false);
@@ -97,7 +97,7 @@ export default function OnboardingSwiper() {
     return (
         <Screen
             isFull={true}
-            style={styles.container}
+            style={styles.container}            
         >
             {/* Animated FlatList for Swiping */}
             <Animated.FlatList
@@ -167,7 +167,7 @@ export default function OnboardingSwiper() {
                                 key={i}
                                 style={[
                                     styles.indicator,
-                                    { width: dotWidth, opacity: dotOpacity, backgroundColor: brand.secondary }
+                                    { width: dotWidth, opacity: dotOpacity, backgroundColor: colors.secondary }
                                 ]}
                             />
                         );
@@ -197,7 +197,7 @@ export default function OnboardingSwiper() {
 }
 
 const styles = StyleSheet.create({
-    container: { backgroundColor: "#FFFFFF" },
+    container: { backgroundColor: "#FFFFFF", paddingHorizontal: 0 },
     slide: { width, alignItems: 'center', justifyContent: 'center', padding: spacing.xl },
     gif: { width: width * 0.85, height: width * 0.85, marginBottom: spacing.xxl },
     textContainer: { height: 150, justifyContent: 'center' },

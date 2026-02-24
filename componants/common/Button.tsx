@@ -2,7 +2,6 @@ import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, StyleProp, ViewS
 import { useTheme } from '@/constants/theme';
 import { typography } from '@/constants/typography';
 import { spacing } from '@/constants/spacing';
-import { shadow } from '@/constants/shadow';
 import { useHaptics } from '@/hooks/use-haptics';
 
 interface ButtonProps {
@@ -15,7 +14,7 @@ interface ButtonProps {
 }
 
 export const Button = ({ title, onPress, variant = 'primary', loading, style, disabled = false }: ButtonProps) => {
-    const { colors } = useTheme();
+    const { colors, shadow } = useTheme();
     const haptics = useHaptics();
 
     const handlePress = () => {
@@ -29,13 +28,13 @@ export const Button = ({ title, onPress, variant = 'primary', loading, style, di
                 return {
                     bg: colors.primary,
                     text: '#FFF',
-                    shadow: shadow.button
+                    shadow: shadow
                 };
             case 'secondary':
                 return {
                     bg: colors.secondary,
                     text: '#FFF',
-                    shadow: shadow.button
+                    shadow: shadow
                 };
             case 'outline':
                 return {
@@ -52,8 +51,7 @@ export const Button = ({ title, onPress, variant = 'primary', loading, style, di
     return (
         <TouchableOpacity
             onPress={handlePress}
-            disabled={disabled || loading}
-            activeOpacity={0.8}
+            disabled={disabled || loading}        
             style={[
                 styles.btn,
                 {
@@ -62,7 +60,7 @@ export const Button = ({ title, onPress, variant = 'primary', loading, style, di
                     borderWidth: activeStyle.border ? 1 : 0,
                     opacity: disabled || loading ? 0.5 : 1,
                 },
-                activeStyle.shadow, // Applying your new shadow.button
+                activeStyle.shadow,
                 style
             ]}           
         >
@@ -73,14 +71,16 @@ export const Button = ({ title, onPress, variant = 'primary', loading, style, di
             )}
         </TouchableOpacity>
     );
+
+
 };
+
 
 const styles = StyleSheet.create({
     btn: {
         height: 56,
         borderRadius: spacing.md,
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: spacing.md,
+        alignItems: 'center',        
     },
 });

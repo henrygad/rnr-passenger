@@ -13,68 +13,69 @@ import Animated, {
 import { useTheme } from '@/constants/theme';
 import { StyleSheet, View } from 'react-native';
 
-
-// 1. Create an Animated version of Ionicons so we can animate the 'color' prop
+// 1. Create an Animated version of Ionicons
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
-// --- The Premium Tab Component ---
 export default function TabItem({ name, focused, label }: { name: any, focused: boolean, label: string }) {
-    const { colors, brand } = useTheme();
+    const { colors } = useTheme();
 
-    // Shared Values
-    const scale = useSharedValue(1);
-    const progress = useSharedValue(0);
+    // FIX 1: Initialize shared values based on the CURRENT 'focused' state 
+    // This prevents them from always starting at 0/1 and then jumping.
+    const scale = useSharedValue(focused ? 1.2 : 1);
+    const progress = useSharedValue(focused ? 1 : 0);
 
-    // Drive animations based on 'focused' state
     useEffect(() => {
-        // 1. Scale: Pop up to 1.25 then settle back (Bouncy)
         scale.value = withSpring(focused ? 1.2 : 1, {
             damping: 10,
             stiffness: 150,
             mass: 0.5
         });
 
-        // 2. Color: Smooth transition (Timing is better for color than spring)
         progress.value = withTiming(focused ? 1 : 0, { duration: 250 });
-    }, [focused, scale, progress]);
+    }, [focused]); // Simplified dependencies
 
-    // Animate the Container (Scale)
     const animatedContainerStyle = useAnimatedStyle(() => ({
         transform: [{ scale: scale.value }],
     }));
 
-    // Animate the Icon Color (Gray -> Brand)
     const animatedIconProps = useAnimatedProps(() => ({
         color: interpolateColor(
             progress.value,
             [0, 1],
-            [colors.muted, brand.primary]
+            [colors.muted, colors.primary]
         ),
+        opacity: interpolate(progress.value, [0, 1], [0.8, 1]),
     }));
 
-    // Animate the Label Color (Gray -> Brand)
     const animatedTextStyle = useAnimatedStyle(() => ({
         color: interpolateColor(
             progress.value,
             [0, 1],
-            [colors.muted, brand.primary]
+            [colors.muted, colors.primary]
         ),
-        // FIX: Use 'interpolate' for numbers. 
-        // This creates a number between 0.8 and 1.
-        opacity: interpolate(progress.value, [0, 1], [0.5, 1]),
+        opacity: interpolate(progress.value, [0, 1], [0.8, 1]),
     }));
 
     return (
         <View style={styles.tabItemContainer}>
             <Animated.View style={animatedContainerStyle}>
-                {/* We use the AnimatedIcon here with animatedProps */}
                 <AnimatedIcon
                     name={focused ? name : `${name}-outline`}
                     size={24}
+                    // FIX 2: Pass a STATIC color prop. 
+                    // This acts as a fallback for the very first render.
+                    color={focused ? colors.primary : colors.muted}
                     animatedProps={animatedIconProps}
                 />
             </Animated.View>
-            <Animated.Text style={[styles.label, animatedTextStyle]}>
+            <Animated.Text
+                style={[
+                    styles.label,
+                    // FIX 3: Pass a static color here as well
+                    { color: focused ? colors.primary : colors.muted },
+                    animatedTextStyle
+                ]}
+            >
                 {label}
             </Animated.Text>
         </View>
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 12,
-        fontFamily: 'InterMedium',
+        fontFamily: 'InterMedium', // Ensure this matches your typography.ts
         marginTop: 4,
         width: "100%",
         textAlign: 'center',

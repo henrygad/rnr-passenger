@@ -80,7 +80,8 @@ export function IdleMap() {
     }
 
     return (
-        <View style={[styles.container, { marginBottom: 80 }]}>
+        <View style={styles.container}>
+            {/* Map view */}
             <MapView
                 ref={mapRef}
                 provider={PROVIDER_GOOGLE}

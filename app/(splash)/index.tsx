@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet } from "react-native";
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -11,7 +11,7 @@ import { useRouter } from "expo-router";
 import { useAuthContext } from "@/context/auth-context";
 import { colors } from "@/constants/colors";
 import Screen from "@/componants/screen";
-const RNR_FULL_LOGO = require("@/assets/images/rnr-full-logo.png");
+import { Image } from "expo-image";
 
 export default function SplashScreen() {
     const router = useRouter();
@@ -28,7 +28,7 @@ export default function SplashScreen() {
 
         // Check auth state after a delay
         const timeout = setTimeout(async () => {
-            await AsyncStorage.removeItem("hasSeenOnboarding");
+            // await AsyncStorage.removeItem("hasSeenOnboarding");
             const hasSeenOnboarding = (await AsyncStorage.getItem("hasSeenOnboarding")) === "true";            
 
             if (auth.loading) {
@@ -59,9 +59,9 @@ export default function SplashScreen() {
         >
             <Animated.View style={[styles.logoContainer, animatedStyle]}>
                 <Image
-                    source={RNR_FULL_LOGO}
+                    source={require("@/assets/images/rnr-full-logo.png")}
                     style={{ width: 200, height: 60, marginTop: 10 }}
-                    resizeMode="contain"
+                    contentFit="contain" 
                 />
             </Animated.View>
         </Screen>
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.brand.light,
         alignItems: "center",
         justifyContent: "center",
+        paddingHorizontal: 0
     },
     logoContainer: {
         alignItems: "center",

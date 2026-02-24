@@ -10,15 +10,15 @@ export const colors = {
         text: "#111111",
         muted: "#6B7280",
         border: "#E5E7EB",
-        card: "#F9FAFB",
+        card: "#FFFFFF",
     },
 
     dark: {
         background: "#0F0F0F",
         text: "#FFFFFF",
         muted: "#A1A1AA",
-        border: "#27272A",
-        card: "#161616",
+        border: "#3c3c3d",
+        card: "#262626",
     },
     gray: {
         100: "#F5F5F5",

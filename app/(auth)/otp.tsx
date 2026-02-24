@@ -9,7 +9,7 @@ import ResendOtp from "@/componants/auth/resend-otp";
 import CustomOtpInput from "@/componants/auth/6-inputs";
 import Screen from "@/componants/screen";
 import { Image } from "expo-image";
-import { Button } from "@/componants/common/Button";
+import { Button } from "@/componants/common/button";
 import { useRouter } from "expo-router";
 
 export default function OtpScreen() {    
@@ -51,7 +51,7 @@ export default function OtpScreen() {
 
     return (
         <Screen
-            style={{ backgroundColor: "#FFFFFF", padding: spacing.lg }}
+            style={{ backgroundColor: "#FFFFFF" }}
             dissmissKeyboardOnTouchOutside={true}
             StatusBarStyle="default"
         >

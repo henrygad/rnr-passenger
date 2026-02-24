@@ -1,5 +1,6 @@
 import { useColorScheme } from "react-native";
 import { colors } from "./colors";
+import { shadow } from "./shadow";
 
 export function useTheme() {
     const scheme = useColorScheme();
@@ -7,7 +8,7 @@ export function useTheme() {
 
     return {
         colors: { ...(isDark ? colors.dark : colors.light), ...colors.brand, ...colors.gray },
-        brand: colors.brand,
+        shadow: isDark ? shadow.dark : shadow.light,
         isDark,
     };
 }

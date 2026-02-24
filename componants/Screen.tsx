@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/constants/theme';
+import { spacing } from '@/constants/spacing';
 
 interface ScreenProps {
     children: React.ReactNode;
@@ -26,7 +27,7 @@ export default function Screen(p: ScreenProps) {
 
     if (p.dissmissKeyboardOnTouchOutside) {
         return (
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={{ flex: 1 }}>
                     <StatusBar
                         barStyle={p.StatusBarStyle || (isDark ? 'light-content' : 'dark-content')}
@@ -36,7 +37,9 @@ export default function Screen(p: ScreenProps) {
                         hidden={p.hideStatusBar}
                     />
                     <KeyboardAvoidingView
-                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        behavior={Platform.select({ ios: 'padding', android: undefined })}
+                        keyboardVerticalOffset={Platform.select({ios: 0, android: 0,})}
                         style={{ flex: 1 }}
                     >
                         <DisplayContainer {...p} />
@@ -76,6 +79,7 @@ const DisplayContainer = (p: ScreenProps) => {
                     // If it's a "full" screen (like onboarding), we ignore top inset
                     paddingTop: p.isFull ? 0 : insets.top,
                     paddingBottom: p.isFull ? 0 : insets.bottom,
+                    paddingHorizontal: Platform.OS === 'ios' ?   spacing.lg : spacing.md,
                 },
                 p.style
             ]}
