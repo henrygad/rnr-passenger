@@ -1,5 +1,5 @@
 import { useTheme } from "@/constants/theme";
-import { HOTEL_DATA } from "@/data/hotels";
+import { HOTEL_DATA } from "@/mock-data/hotels";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";

@@ -10,7 +10,7 @@ export const TopHeader = ({ onSearchFocus }: { onSearchFocus: () => void }) => {
 
     return (
         <View style={styles.container}>
-            <View style={[styles.inputWrapper, { backgroundColor: colors.background, ...shadow }]}>
+            <View style={[styles.inputWrapper, { backgroundColor: colors.background }, shadow]}>
                 <Ionicons name="search" size={20} color={colors.muted} style={{ marginLeft: 15 }} />
                 <View style={styles.input} onTouchStart={onSearchFocus}>
                     <Text style={[typography.body, { color: colors.muted }]}>

@@ -9,37 +9,10 @@ import { useRouter } from 'expo-router';
 import { Card } from '../common/card';
 import { Image } from 'expo-image';
 import { FlatList } from 'react-native-gesture-handler';
+import { RECENT_VISITS_MOCK_DATA } from '@/mock-data/recent-visites';
 
-const RecentVistes = [
-    {
-        id: '1',
-        place: 'Lagos International Airport',
-        address: 'Lagos International Airport',
-    },
-    {
-        id: '2',
-        place: 'Eko Hotels & Suites',
-        address: 'Eko Hotels & Suites',
-    },
-    {
-        id: '3',
-        place: 'Shoprite Ikeja',
-        address: 'Shoprite Ikeja',
-    },
-    {
-        id: '4',
-        place: 'Airport Road',
-        address: 'Airport Road',
-    },
-    {
-        id: '5',
-        place: 'Home',
-        address: 'Set your home address',
-    },
 
-];
-
-export default function BookRide() {
+export default function BottomSheetComponent() {
     const { colors, shadow } = useTheme();
     const snapPoints = useMemo(() => ['20%', '30', '50%', '90%'], []);
     const router = useRouter();
@@ -55,13 +28,14 @@ export default function BookRide() {
             onChange={handleSheetChanges}
             backgroundStyle={[{ backgroundColor: colors.background, borderRadius: 28 }]}
             handleIndicatorStyle={{ backgroundColor: colors.muted, width: 60 }}
-            style={[styles.sheetContainer, { shadowColor: shadow.shadowColor }]}
+            style={[styles.sheetContainer]}
         >
             <BottomSheetView style={styles.content}>
                 <Text style={[typography.heading, { color: colors.text }]}>Where to?</Text>
 
+                {/* Choose destination input trigger */}
                 <Pressable
-                    style={[styles.inputWrapper, { backgroundColor: colors.light }, shadow]}
+                    style={[styles.inputWrapper, { borderColor: colors.light }, shadow]}
                     onPress={() => router.push("/(account)/(modals)/booking?tab=ride")}
                 >
                     <Ionicons name="location" size={25} color={colors.muted} />
@@ -74,10 +48,7 @@ export default function BookRide() {
                 </Pressable>
 
                 <View style={styles.RNRCardsWrapper}>
-                    <Pressable
-                        style={styles.rideCard}
-                    // onPress={() => router.push("/(account)/(modals)/booking?tab=ride")}
-                    >
+                    <Pressable style={styles.rideCard}>
                         <Card style={{ backgroundColor: colors.light, padding: 0 }}>
                             <Image
                                 source={require("@/assets/images/ride-home.png")}
@@ -88,10 +59,7 @@ export default function BookRide() {
                         <Text style={[styles.cardText, { color: colors.text }]}>RIDE</Text>
 
                     </Pressable>
-                    <Pressable
-                        style={styles.restCard}
-                    // onPress={() => router.push("/(account)/(modals)/booking?tab=rest")}
-                    >
+                    <Pressable style={styles.restCard}>
                         <Card style={{ padding: 0, }}>
                             <Image
                                 source={require('@/assets/images/rest-home.png')}
@@ -103,38 +71,31 @@ export default function BookRide() {
                     </Pressable>
                 </View>
 
-                <View style={styles.recentListWrapper}>
-                    <FlatList
-                        data={RecentVistes}
-                        keyExtractor={(item) => item.id}
-                        ListHeaderComponent={ListHeader}
-                        renderItem={({ item }) => (
-                            <ListItem place={item.place} address={item.address} />
-                        )}
-                        contentContainerStyle={{ marginTop: 20 }}
-                        ListFooterComponent={() => <ListFooter loading={false} />}
-                        onEndReached={() => { }}
-                        onEndReachedThreshold={0.5}
-                        showsVerticalScrollIndicator={false}
-                    />
-                </View>
+                {/* This is the section for recently visited places */}
+                <Text style={[styles.recentText, { color: colors.text }]}>Recently visited</Text>
+                <FlatList
+                    data={RECENT_VISITS_MOCK_DATA}
+                    keyExtractor={(item, index) => item.id}
+                    renderItem={({ item }) => (
+                        <ListItem place={item.place} address={item.address} />
+                    )}
+                    contentContainerStyle={{ gap: spacing.sm, paddingTop: 10, paddingBottom: 100 }}
+                    ListFooterComponent={() => <ListFooter loading={false} />}
+                    onEndReached={() => { }}
+                    onEndReachedThreshold={0.5}
+                    showsVerticalScrollIndicator={false}
+                    style={{ maxHeight: 340, flex: 1, flexGrow: 0 }}
+                />                
             </BottomSheetView>
-
         </BottomSheet>
     );
 };
-
 
 
 type ListItemProps = {
     place: string,
     address: string
 }
-
-const ListHeader = () => {
-    const { colors } = useTheme();
-    return (<Text style={[styles.recentText, { color: colors.text }]}>Recently visited</Text>)
-};
 
 const ListItem = ({ place, address }: ListItemProps) => {
     const { colors } = useTheme();
@@ -181,23 +142,26 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 8,
     },
-    content: { paddingHorizontal: spacing.lg, paddingBottom: 20, zIndex: 10 },
-    inputWrapper: {
-        marginTop: 15,
-        flexDirection: 'row',
-        height: 50,
+    content: {
         flex: 1,
-        borderRadius: 50,
+        paddingHorizontal: spacing.lg,
+        backgroundColor: 'transparent',
+    },
+    inputWrapper: {
+        flexDirection: 'row',
         alignItems: 'center',
-        overflow: 'hidden',
+        height: 50,
+        marginTop: 15,
         paddingHorizontal: 15,
+        borderRadius: 50,
+        overflow: 'hidden',
+        borderWidth: 1,
     },
     input: { paddingLeft: 10, paddingRight: 8 },
 
     RNRCardsWrapper: {
         marginTop: 25,
         flexDirection: 'row',
-        flex: 1,
         justifyContent: 'space-between'
 
     },
@@ -216,17 +180,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         ...typography.subheading,
     },
-
-    recentListWrapper: { marginTop: 25 },
     recentText: {
         ...typography.subheading,
-        marginBottom: 20,
-        fontWeight: 700
+        fontWeight: 700,
+        marginTop: 25,
+        marginBottom: 10
     },
     item: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20
     },
     iconCircle: {
         width: 36,

@@ -18,7 +18,7 @@ import Screen from "@/componants/screen";
 import { typography } from "@/constants/typography";
 import DestinationInput from "@/componants/booking/destination-input";
 import SelectFleet from "@/componants/booking/select-fleet";
-import { HOTEL_DATA } from "@/data/hotels";
+import { HOTEL_DATA } from "@/mock-data/hotels";
 import Hotelcard from "@/componants/booking/Hotel-card";
 import { Ionicons } from "@expo/vector-icons";
 import DatePicker from "@/componants/booking/date-picker";
@@ -114,7 +114,7 @@ export default function BookingFlowModal() {
                     <FlatList
                         data={HOTEL_DATA}
                         keyExtractor={(item) => item.id}
-                        contentContainerStyle={{ gap: 12, paddingBottom: 20, paddingRight: 10 }}
+                        contentContainerStyle={{ gap: spacing.sm, paddingBottom: 20 }}
                         renderItem={({ item }) => (
                             <Hotelcard
                                 item={item}
@@ -123,6 +123,7 @@ export default function BookingFlowModal() {
                             />
                         )}
                         keyboardShouldPersistTaps="handled"
+                        showsVerticalScrollIndicator={false}
                     />
                 </View>
 
@@ -142,8 +143,8 @@ export default function BookingFlowModal() {
                             </Animated.View>
                         ) : (
                             <Text style={[styles.instantText, { color: colors.muted }]}>
-                                Schedule <Text style={{ fontWeight: '700' }}>Later</Text>
-                            </Text>
+                                    Requesting for: <Text style={{ fontWeight: '700' }}>Now</Text>
+                                </Text>
                         )}
                     </View>
                     <View style={styles.buttonsWrapper}>
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
         gap: 10,
         alignItems: 'center',
     },
-    headerTitle: { ...typography.heading, fontSize: 24 },
+    headerTitle: { ...typography.heading, fontWeight: '700' },
     headerSub: { ...typography.body, fontSize: 14, marginTop: 15, marginBottom: 10, padding: 2 },
     footer: { paddingVertical: spacing.md, paddingBottom: Platform.OS === 'ios' ? 40 : 20 },
     dateInfoRow: { marginBottom: 12, justifyContent: 'center' },

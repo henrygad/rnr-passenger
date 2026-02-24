@@ -10,7 +10,7 @@ import { useRouter } from 'expo-router';
 import Map from '@/componants/map';
 import { useTheme } from '@/constants/theme';
 import { LocateButton } from '@/componants/map/location-button';
-import BookRide from '@/componants/home/book-ride';
+import BottomSheetComponent from '@/componants/home/Bottom-sheet';
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -83,8 +83,8 @@ export default function HomeScreen() {
     if (loading) {
         return (
             <Screen
-                isFull={true}
-                style={[styles.loader, { backgroundColor: colors.background }]}
+                isFull={true}    
+                style={styles.loader}
             >
                 <ActivityIndicator size="large" color={colors.primary} />
             </Screen>
@@ -110,7 +110,7 @@ export default function HomeScreen() {
             <Screen
                 isFull={true}
                 style={{ backgroundColor: 'transparent', paddingHorizontal: 0 }}
-                StatusBarStyle='default'
+                StatusBarStyle='dark-content'                
             >
                 <View style={styles.container}>
                     <Map location={location} mapRef={mapRef} useDarkStyle={false} />
@@ -122,7 +122,7 @@ export default function HomeScreen() {
 
                     <LocateButton onPress={handleLocateUser} />
 
-                    <BookRide />
+                    <BottomSheetComponent />
                 </View>
             </Screen>
         </GestureHandlerRootView>

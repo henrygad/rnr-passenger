@@ -10,7 +10,7 @@ import { spacing } from '@/constants/spacing';
 import { typography } from '@/constants/typography';
 import { Button } from '@/componants/common/button';
 import Screen from '@/componants/screen';
-import { ONBOARDING_DATA } from '@/data/on-boarding';
+import { ONBOARDING_DATA } from '@/mock-data/on-boarding';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');

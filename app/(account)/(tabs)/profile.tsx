@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -13,11 +13,11 @@ export default function Profile() {
     const { colors, } = useTheme();
 
     return (
-        <Screen>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.scrollContent}
-            >
+        <Screen
+            scrollable={true}
+        >          
+            <Text style={[styles.mainTitle, { color: colors.text }]}>Profile</Text>
+
                 {/* Avatar Section */}
                 <Animated.View
                     entering={FadeInDown.delay(100).springify()}
@@ -67,8 +67,7 @@ export default function Profile() {
                 </View>
 
                 {/* Logout Button */}
-                <LogoutButton />
-            </ScrollView>
+            <LogoutButton />            
         </Screen>
     );
 }
@@ -76,13 +75,7 @@ export default function Profile() {
 
 
 const styles = StyleSheet.create({
-    scrollContent: {
-        alignItems: 'center',
-        paddingTop: 25,
-        paddingBottom: 40,
-    },
-
-    // Avatar Section
+    mainTitle: { ...typography.heading, fontWeight: '700', marginBottom: 20, marginTop: 10 },    
     avatarContainer: {
         alignItems: 'center', marginTop: 10, marginBottom: 30
     },

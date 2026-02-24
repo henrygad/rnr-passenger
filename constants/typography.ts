@@ -2,7 +2,7 @@
 export const typography = {   
     heading: {
         fontFamily: "InterBold",
-        fontSize: 25,
+        fontSize: 22,
         lineHeight: 32,
     },
     subheading: {
