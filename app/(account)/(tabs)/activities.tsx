@@ -9,14 +9,15 @@ import History from '@/componants/activities/history';
 import Screen from '@/componants/screen';
 import { MOCK_HISTORY_DATA, MOCK_ONGOING_DATA } from '@/mock-data/activities';
 import { useState } from 'react';
+import CustomHeader from '@/componants/custom-header';
 
 export default function ActivitiesScreen() {
     const { colors } = useTheme();
     const [tab, setTabs] = useState<'upcoming' | 'history'>('upcoming');
 
     return (
-        <Screen>
-            <Text style={[styles.mainTitle, { color: colors.text }]}>Activities</Text>
+        <Screen>            
+            <CustomHeader Title="Activities" showReturnBtn={false} /> 
 
             {/* 1. ONGOING RIDE */}
             <Sectionheading title="Ongoing" icon="radio-button-on" color="#FF3B30" />

@@ -18,9 +18,9 @@ export default function HotelSmallCard({ item, index }: Props) {
     const { colors } = useTheme();  
 
     return (
-        <Animated.View
-            entering={FadeInDown.delay(index * 100).springify().damping(15)}
-        >
+        // <Animated.View
+        //     entering={FadeInDown.delay(index * 100).springify().damping(15)}
+        // >
             <Card style={[styles.cardContainer, { backgroundColor: colors.background }]}>
                 {/* Image Section */}
                 <View style={styles.imageWrapper}>
@@ -81,7 +81,7 @@ export default function HotelSmallCard({ item, index }: Props) {
                     </View>                 
                 </TouchableOpacity>
             </Card>
-        </Animated.View>
+        // </Animated.View>
     )
 };
 

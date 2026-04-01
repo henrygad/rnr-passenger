@@ -5,6 +5,12 @@ import { Stack } from 'expo-router'
 export default function StacksLayout() {
     return <Stack>
         <Stack.Screen
+            name="Notifications"
+            options={{
+                headerShown: false,
+            }}
+        />
+        <Stack.Screen
             name="Setttings"
             options={{
                 headerShown: false,

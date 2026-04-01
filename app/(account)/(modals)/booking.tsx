@@ -24,18 +24,17 @@ import { Ionicons } from "@expo/vector-icons";
 import DatePicker from "@/componants/booking/date-picker";
 import { spacing } from "@/constants/spacing";
 import { Button } from "@/componants/common/button";
-import { useRouter } from "expo-router";
+import CustomHeader from "@/componants/custom-header";
+import { registerForPushNotificationsAsync } from '@/lib/notification-permission';
 
-export default function BookingFlowModal() {
-    const router = useRouter();
+export default function BookingFlowModal() {    
     const { colors } = useTheme();    
     const [destination, setDestination] = useState("");
     const [stops, setStops] = useState<string[]>([]);
     const [selectedVehicle, setSelectedVehicle] = useState("1");
     const [selectedHotel, setSelectedHotel] = useState<string | null>(null);
     const [showPicker, setShowPicker] = useState(false);
-    const [isScheduled, setIsScheduled] = useState(false);
-    const [isHotelBooked, setIsHotelBooked] = useState(false);
+    const [isScheduled, setIsScheduled] = useState(false);    
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState<'datetime' | 'date' | 'time'>('date');
 
@@ -70,6 +69,33 @@ export default function BookingFlowModal() {
         setDate(new Date());
     };
 
+
+    const handleConfirmBooking = async () => {
+        // 1. Process the booking logic first
+        const bookingSuccess = true; // Simulate a successful booking response
+
+        if (bookingSuccess) {
+            // 2. Ask for permission (It only shows the popup if they haven't answered yet)
+            const token = await registerForPushNotificationsAsync();
+
+            if (token) {
+                // 3. Save this token to your MongoDB via your API 
+                // {
+                //     "_id": "user_123",
+                //         "name": "Chidi Okoro",
+                //             "notificationSettings": {
+                //         "pushToken": "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]",
+                //             "enabled": true,
+                //                 "lastUpdated": "2026-04-01T12:00:00Z"
+                //     }
+                // }
+            }
+
+
+            // Navigate to confirmation screen or show success message
+        }
+    };
+
     return (
         <Screen
             isFull={Platform.OS === "ios" ? true : false}
@@ -81,19 +107,7 @@ export default function BookingFlowModal() {
                 style={{ flex: 1 }}
             >
                 {/* Header */}
-                <View style={[styles.header, { borderColor: colors.border }]}>
-                    {/* Show return back icon only for android */}
-                    {Platform.OS === "android" && (
-                        <TouchableOpacity
-                            onPress={() => router.back()}
-                        >
-                            <Ionicons name="chevron-back-sharp" size={24} color={colors.text} />
-                        </TouchableOpacity>
-                    )}
-                    <Text style={[styles.headerTitle, { color: colors.text }]}>
-                        Where are we going?
-                    </Text>
-                </View>
+                <CustomHeader Title=" Where are we going?" showReturnBtn={Platform.OS === "android"} />
 
                 {/* body */}
                 <View style={{ flex: 1, marginTop: 10 }}>
@@ -119,7 +133,7 @@ export default function BookingFlowModal() {
                             <Hotelcard
                                 item={item}
                                 selectedHotel={selectedHotel}
-                                setSelectedHotel={setSelectedHotel}
+                                setSelectedHotel={setSelectedHotel}                              
                             />
                         )}
                         keyboardShouldPersistTaps="handled"
@@ -163,8 +177,8 @@ export default function BookingFlowModal() {
                             />
                         </TouchableOpacity>
                         <Button
-                            title={isHotelBooked ? "Book Ride & Rest" : "Book Ride"}
-                            onPress={() => { setIsHotelBooked(!isHotelBooked) }}
+                            title={selectedHotel ? "Book Ride & Rest" : "Book Ride"}
+                            onPress={handleConfirmBooking}
                             style={{ flex: 1, borderRadius: 22, backgroundColor: colors.primary }}
                         />
                     </View>

@@ -15,9 +15,8 @@ export default function Profile() {
     return (
         <Screen
             scrollable={true}
-        >          
-            <Text style={[styles.mainTitle, { color: colors.text }]}>Profile</Text>
-
+        >                     
+            <View style={{ marginBottom: 4 }} />
                 {/* Avatar Section */}
                 <Animated.View
                     entering={FadeInDown.delay(100).springify()}

@@ -4,9 +4,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/constants/theme';
 import { typography } from '@/constants/typography';
 import { colors } from '@/constants/colors';
+import { useRouter } from 'expo-router';
 
 export const TopHeader = ({ onSearchFocus }: { onSearchFocus: () => void }) => {
     const { colors, shadow } = useTheme();
+    const route = useRouter();
 
     return (
         <View style={styles.container}>
@@ -19,7 +21,10 @@ export const TopHeader = ({ onSearchFocus }: { onSearchFocus: () => void }) => {
                 </View>
             </View>
             <View style={styles.noticWrapper}>
-                <Pressable style={[styles.notifBtn, shadow, { backgroundColor: colors.background }]}>
+                <Pressable
+                    onPress={() => route.push('/notifications')}
+                    style={[styles.notifBtn, shadow, { backgroundColor: colors.background }]}
+                >
                     <Ionicons
                         name="notifications"
                         size={24}

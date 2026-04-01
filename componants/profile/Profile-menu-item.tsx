@@ -6,7 +6,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 
 export default function ProfileMenuItem({ icon, label, iconBg, iconColor, index }: any) {
     const { colors, shadow } = useTheme();
-
+    
     return (
         <Animated.View entering={FadeInDown.delay(200 + index * 100).springify()}>
             <TouchableOpacity

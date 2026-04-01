@@ -17,13 +17,13 @@ export default function LoginSuccessfully() {
         <Screen
             isFull={true}
             style={[styles.container, { padding: spacing.lg }]}
-        >
-            <View style={{ marginTop: spacing.xxl }}>
+        >           
+            <View style={{ marginTop: spacing.xxl * 2, display: 'flex', alignItems: 'center' }}>
                 <Image
                     source={require('@/assets/gifs/success.gif')}
                     style={styles.image}
                     contentFit="contain"
-                />
+                />                
             </View>
             <View>
                 {/* Title */}
@@ -56,5 +56,5 @@ export default function LoginSuccessfully() {
 
 const styles = StyleSheet.create({
     container: { backgroundColor: "#FFFFFF" },
-    image: { width: width * 0.85, height: width * 0.85, marginBottom: spacing.xxl },
+    image: { width: width * 0.3, height: width * 0.3, marginBottom: spacing.sm },
 });

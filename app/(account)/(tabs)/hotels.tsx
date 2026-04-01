@@ -7,6 +7,7 @@ import { useTheme } from '@/constants/theme';
 import { typography } from '@/constants/typography';
 import { Ionicons } from '@expo/vector-icons';
 import { spacing } from '@/constants/spacing';
+import CustomHeader from '@/componants/custom-header';
 
 
 export default function HotelSearchScreen() {
@@ -18,8 +19,8 @@ export default function HotelSearchScreen() {
     // const [showStickingHeaderWhenScrollingUp, setShowStickingHeaderWhenScrollingUp] = useState(false);
 
     return (
-        <Screen>
-            <Text style={[styles.mainTitle, { color: colors.text }]}>Hotels near you</Text>
+        <Screen>            
+            <CustomHeader Title="Hotels Nearby" showReturnBtn={false} />                                                    
 
             <View style={[styles.inputWrapper, { borderColor: colors.primary }, shadow]}>
                 <Ionicons name="search" size={20} color={colors.muted} style={{ marginLeft: 15 }} />
@@ -44,8 +45,7 @@ export default function HotelSearchScreen() {
     );
 };
 
-const styles = StyleSheet.create({
-    mainTitle: { ...typography.heading, fontWeight: '700', },
+const styles = StyleSheet.create({    
     inputWrapper: {
         flexDirection: 'row',
         height: 40,
